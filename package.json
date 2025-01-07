@@ -1,0 +1,59 @@
+{
+    "name": "toolbox",
+    "ebuild": {
+        "libName": "ViteNpm",
+        "fileName": "vite-npm",
+        "publish": {
+            "name": "vite-npm",
+            "version": "0.0.1",
+            "description": "",
+            "repository": {
+                "type": "git",
+                "url": "https://github.com/USER/REPO"
+            },
+            "keywords": [
+                ""
+            ],
+            "author": "USER",
+            "license": "",
+            "bugs": {
+                "url": "https://github.com/USER/REPO/issues"
+            },
+            "homepage": "https://USER.github.io/REPO",
+            "publishConfig": {
+                "registry": "https://registry.npmjs.org/",
+                "tag": "latest"
+            }
+        }
+    },
+    "private": true,
+    "version": "0.0.1",
+    "scripts": {
+        "init": "node build/init.js",
+        "dev": "vite --host",
+        "lint": "eslint --fix",
+        "build": "vite build -m=sdk",
+        "build:app": "vite build -m=app",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "^7.21.4",
+        "@rollup/plugin-babel": "^6.0.4",
+        "@types/node": "^22.2.0",
+        "@typescript-eslint/eslint-plugin": "^5.4.0",
+        "@typescript-eslint/parser": "^5.4.0",
+        "@vitejs/plugin-legacy": "^4.0.2",
+        "dts-bundle-generator": "^9.5.1",
+        "eslint": "^8.2.0",
+        "terser": "^5.16.8",
+        "typescript": "^4.9.3",
+        "typescript-eslint": "0.0.1-alpha.0",
+        "up-fs": "^0.0.1",
+        "vite": "^4.2.0"
+    },
+    "dependencies": {
+        "link-dom": "^0.0.7"
+    },
+    "description": "Ebuild project",
+    "author": "theajack"
+}
