@@ -13,7 +13,7 @@ export function setTabValue (v: string) {
 export function useTab (el: HTMLTextAreaElement|string) {
     const dom = typeof el === 'string' ? document.querySelector(el) : el;
     if (!dom) throw new Error('Target not exist');
-    // if (dom.tagName !== 'TEXTAREA') throw new Error('Only support textarea');
+    if (dom.tagName !== 'TEXTAREA') throw new Error('Only support textarea');
     dom.addEventListener('keydown', onKeyDown);
 }
 
@@ -85,38 +85,9 @@ function onKeyDownBase (el: HTMLTextAreaElement, e: KeyboardEvent, tab: string) 
     }
 }
 
-
-const insertContent = (content: string, isTextArea = true) => {
+function insertContent (content: string) {
     if (!content)  return;
-
-    if (isTextArea) {
-        document.execCommand('insertText', false, content);
-        return;
-    }
-    // todo 是否需要支持contenteditable？
-    // const sel = window.getSelection();
-    // // @ts-ignore
-    // // console.log('insertHTML', sel, sel!.anchorOffset);
-
-    // if (!sel) return;
-
-    // if (sel.rangeCount > 0) {
-    //     const range = sel.getRangeAt(0); // 获取选择范围
-    //     range.deleteContents(); // 删除选中的内容
-    //     const el = document.createElement('div'); // 创建一个空的div外壳
-    //     el.innerHTML = content; // 设置div内容为我们想要插入的内容。
-    //     const frag = document.createDocumentFragment();// 创建一个空白的文档片段，便于之后插入dom树
-    //     const node = el.firstChild;
-    //     if (!node) return;
-    //     const lastNode = frag.appendChild(node);
-    //     range.insertNode(frag);                 // 设置选择范围的内容为插入的内容
-    //     const contentRange = range.cloneRange();  // 克隆选区
-    //     contentRange.setStartAfter(lastNode);          // 设置光标位置为插入内容的末尾
-    //     contentRange.collapse(true);                   // 移动光标位置到末尾
-    //     sel.removeAllRanges();                  // 移出所有选区
-    //     // console.log(range, contentRange);
-    //     sel.addRange(contentRange);             // 添加修改后的选区
-    // }
+    document.execCommand('insertText', false, content);
 };
 
 function getSelectionInfo (el: HTMLTextAreaElement): {
@@ -150,14 +121,4 @@ function getSelectionInfo (el: HTMLTextAreaElement): {
         startLineIndex,
     };
 
-}
-
-function insertText (text: string, index: number, el: HTMLTextAreaElement) {
-    let success = false;
-    try {
-        success = document.execCommand('insertText', false, text);
-    } catch (e) {}
-    if (!success) {
-        el.value = el.value.slice(0, index) + text + el.value.slice(index);
-    }
 }
