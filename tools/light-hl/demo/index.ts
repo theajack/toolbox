@@ -10,9 +10,7 @@ document.getElementById('container')!.innerHTML = html;
 
 document.body.appendChild(HighLight({
     code: 'function main(){\n  console.log("Hello World!");\n}',
-    highlight: {
-        column: 10,
-        line: 1,
-        // length: 3
-    }
+    highlights: [{
+        match: /on[s ]/g,
+    }]
 }));
