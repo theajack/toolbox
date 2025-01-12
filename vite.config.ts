@@ -86,6 +86,7 @@ function geneBuildConfig (name: string): UserConfig {
             }
         }],
         
+        
         build: {
             minify: true,
             
@@ -97,7 +98,7 @@ function geneBuildConfig (name: string): UserConfig {
             },
             rollupOptions: {
                 // 不需要
-                external: (toolConfig.dependencies) || [],
+                // external: [],
                 plugins: [
                     babel({
                         exclude: 'node_modules/**',
@@ -132,7 +133,7 @@ function generatePackage (name: string) {
         JSON.stringify(Object.assign(
             ebuild.publish,
             {
-                homepage: `https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/${name}/demo.js`
+                homepage: `https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/${name}`
             },
             pick(toolConfig, [
                 'version', 'description',

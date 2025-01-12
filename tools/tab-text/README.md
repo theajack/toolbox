@@ -7,7 +7,7 @@
 
 Make the textarea support Tab indentation.
 
-[Demo](https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/tab-text/demo.js)
+[Demo](https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/tab-text)
 
 ## Usage
 

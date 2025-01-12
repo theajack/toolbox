@@ -7,7 +7,7 @@
 
 A Lightweight HightLight Library
 
-[Demo](https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/light-hl/demo.js)
+[Demo](https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/light-hl)
 
 ## Usage
 
