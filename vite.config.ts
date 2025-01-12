@@ -8,7 +8,7 @@ import {babel} from '@rollup/plugin-babel';
 import {resolve} from 'path';
 import pkg from './package.json';
 import {execSync} from 'child_process';
-import {writeFileSync, copyFileSync} from 'fs';
+import {writeFileSync, copyFileSync, rmdirSync} from 'fs';
 
 const {version, ebuild, name} = pkg;
 
@@ -21,7 +21,8 @@ export default defineConfig(({mode}) => {
 
     let version = pubVersion;
     let name = '';
-    if (mode.startsWith('sdk')) {
+
+    if (mode.startsWith('iife') || mode.startsWith('sdk')) {
         [mode, name] = mode.split('_');
         version = require(`./tools/${name}/config.json`).version;
     }
@@ -29,6 +30,7 @@ export default defineConfig(({mode}) => {
     const config = ({
         'development': geneDevConfig,
         'sdk': () => geneBuildConfig(name),
+        'iife': () => geneBuildConfig(name, true),
         'app': geneBuildAppConfig,
     })[mode]();
 
@@ -62,34 +64,42 @@ function geneBuildAppConfig (): UserConfig {
     };
 }
 
-function geneBuildConfig (name: string): UserConfig {
-
-
+function geneBuildConfig (name: string, isIIFE = false): UserConfig {
     const toolConfig = require(`./tools/${name}/config.json`);
 
-    const formats: LibraryFormats[] = ['es', 'iife'];
+    let formats: LibraryFormats[];
 
-    if (!toolConfig.browserOnly) {
-        formats.push('cjs');
+    if (isIIFE) {
+        formats = ['iife'];
+    } else {
+        formats = ['es'];
+        if (!toolConfig.browserOnly) {
+            formats.push('cjs');
+        }
     }
-
     return {
         plugins: [{
             name: 'generate-npm-stuff',
             writeBundle () {
-                execSync([
-                    'npx dts-bundle-generator -o',
-                    `publish/${name}/${name}.es.min.d.ts`,
-                    `tools/${name}/index.ts`
-                ].join(' '));
-                generatePackage(name);
+
+                if (isIIFE) {
+                    const fullName = `${name}.iife.min.js`;
+                    copyFileSync(`publish/${name}/iife/${fullName}`, `publish/${name}/${fullName}`);
+                    rmdirSync(`publish/${name}/iife`, {recursive: true});
+                } else {
+                    execSync([
+                        'npx dts-bundle-generator -o',
+                        `publish/${name}/${name}.es.min.d.ts`,
+                        `tools/${name}/index.ts`
+                    ].join(' '));
+                    generatePackage(name);
+                }
             }
         }],
         
         
         build: {
             minify: true,
-            
             lib: {
                 entry: resolve(__dirname, `tools/${name}/index.ts`), // 打包的入口文件
                 name: toolConfig.libName || upcase(name), // 包名
@@ -97,8 +107,7 @@ function geneBuildConfig (name: string): UserConfig {
                 fileName: (format: string) => `${name}.${format}.min.js`,
             },
             rollupOptions: {
-                // 不需要
-                // external: [],
+                external: isIIFE ? [] : toolConfig.dependencies,
                 plugins: [
                     babel({
                         exclude: 'node_modules/**',
@@ -107,7 +116,7 @@ function geneBuildConfig (name: string): UserConfig {
                     })
                 ]
             },
-            outDir: resolve(__dirname, `publish/${name}/`), // 打包后存放的目录文件
+            outDir: resolve(__dirname, `publish/${name}/${isIIFE ? 'iife' : ''}`), // 打包后存放的目录文件
         },
     };
 }
