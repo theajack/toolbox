@@ -30,7 +30,7 @@ function onKeyDownBase (el: HTMLTextAreaElement, e: KeyboardEvent, tab: string) 
 
         let {startLineIndex: index, start, end} = info;
 
-        console.log(info);
+        // console.log(info);
 
         const texts = info.lineText.split('\n');
 
@@ -41,7 +41,12 @@ function onKeyDownBase (el: HTMLTextAreaElement, e: KeyboardEvent, tab: string) 
                     el.selectionStart = index;
                     el.selectionEnd = index + tabSize;
                     document.execCommand('delete', false);
-                    if (isFirst) start -= tabSize;
+                    if (isFirst) {
+                        // ! 如果不能继续缩退了就无需移动start
+                        if (text.startsWith(tab + tab)) {
+                            start -= tabSize;
+                        }
+                    };
                     end -= tabSize;
                     index += text.length - tabSize + 1;
                 } else {
@@ -49,6 +54,7 @@ function onKeyDownBase (el: HTMLTextAreaElement, e: KeyboardEvent, tab: string) 
                 }
                 isFirst = false;
             }
+            console.log(start, end);
             el.selectionStart = start;
             el.selectionEnd = end;
             return;
