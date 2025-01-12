@@ -146,6 +146,10 @@ function generatePackage (name: string) {
                 'unpkg': `${name}.iife.min.js`,
                 'jsdelivr': `${name}.iife.min.js`,
                 'typings': `${name}.es.min.d.ts`,
+                'repository': {
+                    'type': 'git',
+                    'url': `https://github.com/theajack/toolbox/tree/main/tools/${name}`
+                },
             }
         ), null, 2),
         'utf8'

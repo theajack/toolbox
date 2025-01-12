@@ -15,30 +15,59 @@ A Lightweight HightLight Library
 npm install light-hl
 ```
 
-`useTab`
+`highlight`
 
 ```js
-import {useTab} from "tab-text";
-useTab('#text');
+
+import {highlight} from 'light-hl';
+const html = highlight('console.log("Hello World!");');
+document.body.innerHTML = html;
 ```
 
-use `onKeyDown`
+`HighLight`
 
 ```js
-import {onKeyDown} from "tab-text";
-document.getElementById('text').addEventListener('keydown', onKeyDown);
+import {HighLight} from 'light-hl';
+
+document.body.appendChild(HighLight({
+    code: 'function main(){\n  console.log("Hello World!");\n}',
+    highlights: [{
+        match: /main/g,
+    }]
+}));
 ```
 
-`setTabValue`
+HightLight Options 
 
-```js
-import {setTabValue} from "tab-text";
-setTabValue('\t');
+```ts
+interface IHighLightBase {
+	color?: string;
+	opacity?: number;
+}
+interface IHighLightPosition extends IHighLightBase {
+	row: number;
+	column: number;
+	range?: number;
+}
+interface IHighLightMatch extends IHighLightBase {
+	match: string | RegExp;
+}
+type IHighLight = IHighLightPosition | IHighLightMatch;
+declare function HighLight(options?: {
+	code?: string;
+	borderRight?: boolean;
+	startIndex?: number;
+	highlights?: IHighLight[];
+	style?: IStyle;
+	codeStyle?: IStyle;
+	lineHeight?: number;
+	lineCount?: number;
+}): HTMLElement;
 ```
 
 ## CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/tab-text"></script>
-<script>console.log(window.TabText) </script>
+<script src="https://cdn.jsdelivr.net/npm/light-hl"></script>
+<script>console.log(window.LightHl) </script>
 ```

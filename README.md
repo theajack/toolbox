@@ -5,6 +5,7 @@
 -->
 # [ToolBox](https://github.com/theajack/toolbox)
 
-Collection of practical tool libraries.
+Repository of util collection
 
 - [tab-text](https://github.com/theajack/toolbox/tree/main/tools/tab-text): Make the textarea support Tab indentation.
+- [light-hl](https://github.com/theajack/toolbox/tree/main/tools/light-hl): A Lightweight HightLight Library.

@@ -16,7 +16,7 @@ document.getElementById('container').innerHTML = html;
 document.getElementById('jx-app').appendChild(HighLight({
     code: 'function main(){\n  console.log("Hello World!");\n}',
     highlights: [{
-        match: /on[s ]/g,
+        match: /main/g,
     }]
 }));`
 };
