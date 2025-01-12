@@ -3,16 +3,15 @@
  * @Date: 2023-04-04 23:20:27
  * @Description: Coding something
  */
-import {UserConfig, defineConfig} from 'vite';
+import {LibraryFormats, UserConfig, defineConfig} from 'vite';
 import {babel} from '@rollup/plugin-babel';
 import {resolve} from 'path';
 import pkg from './package.json';
 import {execSync} from 'child_process';
 import {writeFileSync, copyFileSync} from 'fs';
 
-const {version, ebuild, dependencies = {}, name} = pkg;
+const {version, ebuild, name} = pkg;
 
-const fileName = ebuild.fileName || ebuild.publish.name;
 const pubVersion = ebuild.publish.version || version;
 
 // https://vitejs.dev/config/
@@ -20,16 +19,24 @@ export default defineConfig(({mode}) => {
     const isDev = mode === 'development';
     console.log('defineConfig', mode, isDev);
 
+    let version = pubVersion;
+    let name = '';
+    if (mode.startsWith('sdk')) {
+        [mode, name] = mode.split('_');
+        version = require(`./tools/${name}/config.json`).version;
+    }
+
     const config = ({
         'development': geneDevConfig,
-        'sdk': geneBuildConfig,
-        'app': geneBuildAppConfig
+        'sdk': () => geneBuildConfig(name),
+        'app': geneBuildAppConfig,
     })[mode]();
+
 
     return {
         define: {
             __DEV__: isDev,
-            __VERSION__: `"${pubVersion}"`,
+            __VERSION__: `"${version}"`,
             __WIN__: 'globalThis',
         },
         ...config,
@@ -55,13 +62,27 @@ function geneBuildAppConfig (): UserConfig {
     };
 }
 
-function geneBuildConfig (): UserConfig {
+function geneBuildConfig (name: string): UserConfig {
+
+
+    const toolConfig = require(`./tools/${name}/config.json`);
+
+    const formats: LibraryFormats[] = ['es', 'iife'];
+
+    if (!toolConfig.browserOnly) {
+        formats.push('cjs');
+    }
+
     return {
         plugins: [{
             name: 'generate-npm-stuff',
             writeBundle () {
-                execSync(`npx dts-bundle-generator -o npm/${fileName}.es.min.d.ts src/index.ts`);
-                generatePackage();
+                execSync([
+                    'npx dts-bundle-generator -o',
+                    `publish/${name}/${name}.es.min.d.ts`,
+                    `tools/${name}/index.ts`
+                ].join(' '));
+                generatePackage(name);
             }
         }],
         
@@ -69,14 +90,14 @@ function geneBuildConfig (): UserConfig {
             minify: true,
             
             lib: {
-                entry: resolve(__dirname, 'src/index.ts'), // 打包的入口文件
-                name: ebuild.libName, // 包名
-                formats: ['es', 'iife', 'cjs'], // 打包模式，默认是es和umd都打
-                fileName: (format: string) => `${fileName}.${format}.min.js`,
+                entry: resolve(__dirname, `tools/${name}/index.ts`), // 打包的入口文件
+                name: toolConfig.libName || upcase(name), // 包名
+                formats, // 打包模式，默认是es和umd都打
+                fileName: (format: string) => `${name}.${format}.min.js`,
             },
             rollupOptions: {
                 // 不需要
-                // external: [ ...Object.keys(deps.dependencies) ],
+                external: (toolConfig.dependencies) || [],
                 plugins: [
                     babel({
                         exclude: 'node_modules/**',
@@ -85,23 +106,62 @@ function geneBuildConfig (): UserConfig {
                     })
                 ]
             },
-            outDir: resolve(__dirname, 'npm'), // 打包后存放的目录文件
+            outDir: resolve(__dirname, `publish/${name}/`), // 打包后存放的目录文件
         },
     };
 }
 
-function generatePackage () {
+function generatePackage (name: string) {
 
-    copyFileSync('./README.md', './npm/README.md');
-    copyFileSync('./LICENSE', './npm/LICENSE');
+    const target = `./publish/${name}/`;
 
-    writeFileSync('./npm/package.json', JSON.stringify({
-        ...ebuild.publish,
-        dependencies,
-        'main': `${fileName}.cjs.min.js`,
-        'module': `${fileName}.es.min.js`,
-        'unpkg': `${fileName}.iife.min.js`,
-        'jsdelivr': `${fileName}.iife.min.js`,
-        'typings': `${fileName}.es.min.d.ts`,
-    }, null, 2), 'utf8');
+    copyFileSync(`./tools/${name}/README.md`, `${target}README.md`);
+    copyFileSync('./LICENSE', `${target}/LICENSE`);
+
+    const pkg = require('./package.json');
+    const toolConfig = require(`./tools/${name}/config.json`);
+    const list = toolConfig.dependencies || [];
+    const dependencies = {};
+    console.log('list', list);
+    for (const name of list) {
+        dependencies[name] = pkg.dependencies[name];
+    }
+
+    writeFileSync(
+        `${target}package.json`,
+        JSON.stringify(Object.assign(
+            ebuild.publish,
+            {
+                homepage: `https://shiyix.cn/jsbox/?github=theajack.toolbox/tools/${name}/demo.js`
+            },
+            pick(toolConfig, [
+                'version', 'description',
+                'keywords'
+            ]),
+            {
+                name,
+                dependencies,
+                'main': `${name}.${toolConfig.browserOnly ? 'es' : 'cjs'}.min.js`,
+                'module': `${name}.es.min.js`,
+                'unpkg': `${name}.iife.min.js`,
+                'jsdelivr': `${name}.iife.min.js`,
+                'typings': `${name}.es.min.d.ts`,
+            }
+        ), null, 2),
+        'utf8'
+    );
+}
+
+function pick (target: any, keys: string[]) {
+    const result: any = {};
+    for (const key of keys) {
+        result[key] = target[key];
+    }
+    return result;
+}
+
+function upcase (name: string) {
+    return name.split('-').map(s => {
+        return s[0].toUpperCase() + s.substring(1);
+    }).join('');
 }
