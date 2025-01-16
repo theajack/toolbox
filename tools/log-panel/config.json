@@ -1,0 +1,11 @@
+{
+    "version": "0.0.1",
+    "description": "Console logger",
+    "keywords": [
+      ""
+    ],
+    "dependencies": [
+        ""
+    ],
+    "browserOnly": true
+  }

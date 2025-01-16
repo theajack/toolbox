@@ -9,7 +9,9 @@ const html = highlight('console.log("Hello World!");');
 document.getElementById('container')!.innerHTML = html;
 
 document.body.appendChild(HighLight({
-    code: 'function main(){\n  console.log("Hello World!");\n}',
+    code: `function main(){
+    console.log("Hello World!");
+}`,
     highlights: [{
         match: /main/g,
     }]
