@@ -9,6 +9,7 @@ import {resolve} from 'path';
 import pkg from './package.json';
 import {execSync} from 'child_process';
 import {writeFileSync, copyFileSync, rmdirSync} from 'fs';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 const {version, ebuild, name} = pkg;
 
@@ -78,24 +79,25 @@ function geneBuildConfig (name: string, isIIFE = false): UserConfig {
         }
     }
     return {
-        plugins: [{
-            name: 'generate-npm-stuff',
-            writeBundle () {
+        plugins: [
+            cssInjectedByJsPlugin(), {
+                name: 'generate-npm-stuff',
+                writeBundle () {
 
-                if (isIIFE) {
-                    const fullName = `${name}.iife.min.js`;
-                    copyFileSync(`publish/${name}/iife/${fullName}`, `publish/${name}/${fullName}`);
-                    rmdirSync(`publish/${name}/iife`, {recursive: true});
-                } else {
-                    execSync([
-                        'npx dts-bundle-generator -o',
-                        `publish/${name}/${name}.es.min.d.ts`,
-                        `tools/${name}/index.ts`
-                    ].join(' '));
-                    generatePackage(name);
+                    if (isIIFE) {
+                        const fullName = `${name}.iife.min.js`;
+                        copyFileSync(`publish/${name}/iife/${fullName}`, `publish/${name}/${fullName}`);
+                        rmdirSync(`publish/${name}/iife`, {recursive: true});
+                    } else {
+                        execSync([
+                            'npx dts-bundle-generator -o',
+                            `publish/${name}/${name}.es.min.d.ts`,
+                            `tools/${name}/index.ts`
+                        ].join(' '));
+                        generatePackage(name);
+                    }
                 }
-            }
-        }],
+            }],
         
         
         build: {

@@ -77,26 +77,35 @@ mount(dom.style.text(
     overflow: unset;
     color: ${DefaultColor};
 }
+.lhl-container{
+    overflow: auto;
+}
 .xhl-pre::-webkit-scrollbar,
+.lhl-container::-webkit-scrollbar,
 .xhl-container::-webkit-scrollbar {
     width: 5px;
     cursor: pointer;
     height: 5px;
 }
-.xhl-pre::-webkit-scrollbar-button, .xhl-container::-webkit-scrollbar-button {
+.xhl-pre::-webkit-scrollbar-button, 
+.lhl-container::-webkit-scrollbar-button,
+.xhl-container::-webkit-scrollbar-button {
     display: none;
 }
 .xhl-pre::-webkit-scrollbar-track,
+.lhl-container::-webkit-scrollbar-track,
 .xhl-container::-webkit-scrollbar-track {
     background-color: transparent;
 }
 .xhl-pre::-webkit-scrollbar-thumb,
+.lhl-container::-webkit-scrollbar-thumb,
 .xhl-container::-webkit-scrollbar-thumb {
     background-color: #666;
     cursor: pointer;
     background-clip: initial;
 }
 .xhl-pre::-webkit-scrollbar-thumb:hover,
+.lhl-container::-webkit-scrollbar-thumb:hover,
 .xhl-container::-webkit-scrollbar-thumb:hover {
     background-color: #888;
     cursor: pointer;

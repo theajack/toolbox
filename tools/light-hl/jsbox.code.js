@@ -4,7 +4,7 @@
  * @Description: Coding something
  */
 window.jsboxCode = {
-    lib: 'https://cdn.jsdelivr.net/npm/tab-text',
+    lib: 'https://cdn.jsdelivr.net/npm/light-hl',
     lang: 'javascript',
     needUI: true,
     code: `document.getElementById('jx-app').innerHTML = '<div id="container" style="margin-bottom: 10px;"></div>';

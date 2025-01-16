@@ -37,7 +37,11 @@ document.body.appendChild(HighLight({
 }));
 ```
 
-HightLight Options 
+**OverFlow Scroll**
+
+If you want OverFlow scroll on your container, just add `lhl-container` class to you container element;
+
+**HightLight Options**
 
 ```ts
 interface IHighLightBase {

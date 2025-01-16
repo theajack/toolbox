@@ -3,9 +3,8 @@
  * @Date: 2025-01-15 20:21:18
  * @Description: Coding something
  */
+import type {Console} from '.';
 import tool from './tool';
-
-// import {dom} from 'link-dom';
 
 import TYPE from './type';
 import {Icons} from './util';
@@ -41,27 +40,49 @@ function gc (el: HTMLElement, type: string) {
         }
     });
 }
-export function generateFunc (log) {
+export function generateFunc (log: Console) {
     const el = log.blockList;
-    const clear = tool.create('div', 'log-func log-clear log-icon', '', () => {
-        log.blockList.innerHTML = '';
-        console.tc('Console all clear');
-    });
-    clear.innerHTML = Icons.Delete;
     return tool.append(
         tool.create('div', 'log-funcs'),
         [
-            clear,
-            laseEl = gc(el, TYPE.all),
-            gc(el, TYPE.error),
-            gc(el, TYPE.warn),
-            gc(el, TYPE.info),
-            gc(el, TYPE.log),
-            gc(el, TYPE.tc),
-
-            
+            tool.append(
+                tool.create('div', 'log-types'),
+                [
+                    laseEl = gc(el, TYPE.all),
+                    gc(el, TYPE.error),
+                    gc(el, TYPE.warn),
+                    gc(el, TYPE.info),
+                    gc(el, TYPE.log),
+                    gc(el, TYPE.tc),
+                ]
+            ),
+            createBtns(log),
         ]
     );
+}
+
+function createBtns (log: Console) {
+    const map = {
+        clear: () => {
+            log.blockList.innerHTML = '';
+            console.tc('Console all clear');
+        },
+        filter: () => {
+            log.filterBox.open();
+        },
+        run: () => {
+            log.runBox.open();
+        }
+    };
+    const children: any[] = [];
+    for (const key in map) {
+        const clear = tool.create('span', `log-${key} log-icon`, '', map[key]);
+        clear.innerHTML = Icons[key];
+        children.push(clear);
+    }
+    const funcs = tool.create('div', 'log-icon-w');
+    tool.append(funcs, children);
+    return funcs;
 }
 
 

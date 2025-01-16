@@ -52,7 +52,7 @@ function generateDiv (value: any, needCopy: boolean) {
 
 function checkMaxLength (str: string) {
     if (str.length > STRING_MAX) {
-        return str.substring(0, STRING_MAX) + '...';
+        return str.substring(0, STRING_MAX) + '…';
     }
     return str;
 }

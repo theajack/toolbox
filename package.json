@@ -46,11 +46,13 @@
     "@vitejs/plugin-legacy": "^4.0.2",
     "dts-bundle-generator": "^9.5.1",
     "eslint": "^8.2.0",
+    "less": "^4.2.1",
     "terser": "^5.16.8",
     "typescript": "^4.9.3",
     "typescript-eslint": "0.0.1-alpha.0",
     "up-fs": "^0.0.1",
-    "vite": "^4.2.0"
+    "vite": "^4.2.0",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
   },
   "dependencies": {
     "link-dom": "^0.0.7"

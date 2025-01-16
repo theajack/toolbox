@@ -1,8 +1,9 @@
 {
     "version": "0.0.1",
-    "description": "Console logger",
+    "description": "Console Container Component",
     "keywords": [
-      ""
+      "Console",
+      "Debugger Tool"
     ],
     "dependencies": [
         ""
