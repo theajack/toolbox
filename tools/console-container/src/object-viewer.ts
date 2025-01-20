@@ -35,7 +35,7 @@ function checkHugeObject (block: any, key: string, obj: HTMLElement) {
                 cls = 'key';
             }
             const div = generateUnOpenHead();
-            div.innerHTML = '<span class="tc-obj-key">' + key + '</span>:[<span class="tc-obj-' + cls + '">' + str + '</span>]';
+            div.innerHTML = '<span class="cc-obj-key">' + key + '</span>:[<span class="cc-obj-' + cls + '">' + str + '</span>]';
             tool.append(block, div);
             return true;
         }
@@ -50,13 +50,13 @@ function generateHead (block: HTMLElement, key: string, obj: any) {
     }
     let html: string, _objHead: HTMLElement;
     if (obj === null) {
-        html = '<span class="tc-obj-key">' + key + '</span>:<span class="tc-obj-key">null</span>';
+        html = '<span class="cc-obj-key">' + key + '</span>:<span class="cc-obj-key">null</span>';
         _objHead = generateUnOpenHead();
     } else {
         const isArray = obj instanceof Array;
         const start = isArray ? '[' : '{';
         const end = isArray ? ']' : '}';
-        html = '<span class="tc-log-angle"></span> <span class="tc-obj-key">' + key + '</span>:' + start;
+        html = '<span class="cc-log-angle"></span> <span class="cc-obj-key">' + key + '</span>:' + start;
         let first = true;
         for (const k in obj) {
             html += (first ? '' : ',') + generateItem(k, obj[k], !isArray);
@@ -64,9 +64,9 @@ function generateHead (block: HTMLElement, key: string, obj: any) {
         }
         html += end;
         _objHead = tool.create('div', 'log-obj-head log-ell', '', function (this: HTMLElement) {
-            const openClass = (this.children[0].className.indexOf('tc-open') !== -1) ? '' : ' tc-open';
-            nextEl(this).className = 'tc-log-obj-view' + openClass;
-            this.children[0].className = 'tc-log-angle' + openClass;
+            const openClass = (this.children[0].className.indexOf('cc-open') !== -1) ? '' : ' cc-open';
+            nextEl(this).className = 'cc-log-obj-view' + openClass;
+            this.children[0].className = 'cc-log-angle' + openClass;
         });
     }
     _objHead.innerHTML = html;
@@ -75,14 +75,14 @@ function generateHead (block: HTMLElement, key: string, obj: any) {
 }
 // 生成head中单个键值对
 function generateItem (key: string, value: any, needKey = true) {
-    let html = needKey ? '<span class="tc-obj-key">' + key + '</span>:' : '';
+    let html = needKey ? '<span class="cc-obj-key">' + key + '</span>:' : '';
     switch (typeof value) {
         case 'object':
             if (value === null) {
-                html += '<span class="tc-obj-key">null</span>';
+                html += '<span class="cc-obj-key">null</span>';
             } else {
                 if (value instanceof HTMLElement) {
-                    html += '&lt;<span class="tc-obj-key">' + value.tagName.toLowerCase() + '</span>/&gt;';
+                    html += '&lt;<span class="cc-obj-key">' + value.tagName.toLowerCase() + '</span>/&gt;';
                 } else if (value instanceof HTMLDocument) {
                     html += '(#document)';
                 } else {
@@ -90,10 +90,10 @@ function generateItem (key: string, value: any, needKey = true) {
                 }
             }
             break;
-        case 'string':html += '<span class="tc-obj-string">"' + value + '"</span>'; break;
-        case 'number':html += '<span class="tc-obj-number">' + value + '</span>'; break;
-        case 'boolean':html += '<span class="tc-obj-key">' + value + '</span>'; break;
-        case 'function':html += ' <span class="tc-obj-key">f</span>(){}'; break;
+        case 'string':html += '<span class="cc-obj-string">"' + value + '"</span>'; break;
+        case 'number':html += '<span class="cc-obj-number">' + value + '</span>'; break;
+        case 'boolean':html += '<span class="cc-obj-key">' + value + '</span>'; break;
+        case 'function':html += '<span class="cc-obj-key">f</span>(){}'; break;
         default :html += value;
     }
     return html;
@@ -150,7 +150,7 @@ function checkMaxDeep (this: ObjectViewer, block: HTMLElement, key: string, obj:
                 str = '[' + (typeof obj) + ']';
             }
         }
-        div.innerHTML = '<span class="tc-obj-key">' + key + '</span>:' + str;
+        div.innerHTML = '<span class="cc-obj-key">' + key + '</span>:' + str;
         tool.append(block, div);
         return false;
     }

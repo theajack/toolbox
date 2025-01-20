@@ -3,7 +3,7 @@ export default {
         const el = document.createElement(tag);
         if (cls) {
             el.className = cls.split(' ').map((item) => {
-                return 'tc-' + item;
+                return 'cc-' + item;
             }).join(' ');
         }
         if (text) {
@@ -79,12 +79,12 @@ export default {
     },
     active (...arg: any[]) {
         check(arg, (el) => {
-            this.addClass(el, 'tc-active');
+            this.addClass(el, 'cc-active');
         });
     },
     inactive (...arg: any[]) {
         check(arg, (el) => {
-            this.rmClass(el, 'tc-active');
+            this.rmClass(el, 'cc-active');
         });
     }
 };

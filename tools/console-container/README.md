@@ -37,7 +37,8 @@ API
     setMode(mode: "light" | "dark"): void;
     setVisible(bool: boolean, style?: string): void;
     init(): void;
-    filterLog(v: string): void;
+    filterText(v: string): void;
+    filterType(v: "all" | "error" | "warn" | "log" | "info" | "tc"): void;
 }
 ```
 

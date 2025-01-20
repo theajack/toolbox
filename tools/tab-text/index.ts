@@ -54,7 +54,7 @@ function onKeyDownBase (el: HTMLTextAreaElement, e: KeyboardEvent, tab: string) 
                 }
                 isFirst = false;
             }
-            console.log(start, end);
+            // console.log(start, end);
             el.selectionStart = start;
             el.selectionEnd = end;
             return;

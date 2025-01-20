@@ -75,5 +75,5 @@ function generateHtml (value) {
 }
 
 function spanStr (cls, text) {
-    return '<span class="tc-obj-' + cls + '">' + text + '</span>';
+    return '<span class="cc-obj-' + cls + '">' + text + '</span>';
 }

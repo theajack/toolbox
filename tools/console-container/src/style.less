@@ -1,5 +1,5 @@
 
-.tc-console-container.tc-light{
+.cc-console-container.cc-light{
     --border-color: #eee;
     --border-color2: #ddd;
     --background: #fff;
@@ -13,7 +13,7 @@
     --info-bg: #e9e9ff;
     --info-text: #6767ff;
     --info-border: #c0c0ff;
-    --tc-bg: #f3f3f3;
+    --cc-bg: #f3f3f3;
 
     --string-text: #a31515;
     --key-text: #881491;
@@ -26,7 +26,7 @@
     --repeat-bg: #aaa;
 }
 
-.tc-console-container.tc-dark{
+.cc-console-container.cc-dark{
     --border-color: #222;
     --border-color2: #333;
     --background: #111;
@@ -40,7 +40,7 @@
     --info-bg: #243071;
     --info-text: #6767ff;
     --info-border: transparent;
-    --tc-bg: #222;
+    --cc-bg: #222;
 
     --string-text: rgb(254 141 89/100%);
     --key-text: #f465ff;
@@ -50,7 +50,7 @@
     --repeat-bg: #666;
 
 }
-.tc-console-container{
+.cc-console-container{
     display: flex;
     flex-direction: column;
     font-family: menlo, monospace;
@@ -60,70 +60,70 @@
     background-color: var(--background);
     color: var(--color);
 }
-.tc-log-list {
+.cc-log-list {
     flex: 1;
     overflow: auto;
 }
-.tc-log-list::-webkit-scrollbar  {
+.cc-log-list::-webkit-scrollbar  {
     width: 5px;
     cursor: pointer;
     height: 5px;
 }
-.tc-log-list::-webkit-scrollbar-button  {
+.cc-log-list::-webkit-scrollbar-button  {
     display: none;
 }
-.tc-log-list::-webkit-scrollbar-track  {
+.cc-log-list::-webkit-scrollbar-track  {
     display: none;
 }
-.tc-log-list::-webkit-scrollbar-thumb  {
+.cc-log-list::-webkit-scrollbar-thumb  {
     background-color: var(--scroll-color);
     cursor: pointer;
 }
 
-.tc-log-angle {
-    border: 5px solid transparent;
+.cc-log-angle {
+    border: 4px solid transparent;
     position: absolute;
-    top: 5px;
+    top: 3px;
     border-left-color: #666;
     margin-left: -8px;
     transition: all .3s ease;
 }
 
-.tc-log-angle.tc-open {
+.cc-log-angle.cc-open {
     transform: rotate(90deg);
-    top: 7px;
+    top: 6px;
     margin-left: -12px;
 }
 
-.tc-log-block {
+.cc-log-block {
     border-bottom: 1px solid var(--border-color);
     padding: 3px 5px;
     position: relative;
 }
 
-.tc-log-block.tc-log-warn {
+.cc-log-block.cc-log-warn {
     background-color: var(--warn-bg);
     border-color: var(--warn-border);
     color: var(--warn-text);
     
 }
 
-.tc-log-block.tc-log-error {
+.cc-log-block.cc-log-error {
     background-color: var(--error-bg);
     border-color: var(--error-border);
 }
 
-.tc-log-block.tc-log-info {
+.cc-log-block.cc-log-info {
     background-color: var(--info-bg);
     border-color: var(--info-border);
 }
 
 
-.tc-log-block.tc-log-tc {
-    background-color: var(--tc-bg);
+.cc-log-block.cc-log-tc {
+    background-color: var(--cc-bg);
 }
 
-.tc-log-block-hide {
+.cc-log-block-hide {
     z-index: 2;
     display: block;
     position: absolute;
@@ -135,115 +135,115 @@
 }
 
 
-.tc-log-funcs {
+.cc-log-funcs {
     display: flex;
     border-bottom: 1px solid var(--border-color);
     padding: 5px;
     justify-content: space-between;
 }
-.tc-log-types{
+.cc-log-types{
     display: flex;
 }
 
-.tc-log-func {
+.cc-log-func {
     margin-right: 2px;
     padding: 2px 4px;
     cursor: pointer;
 }
 
-.tc-log-func.tc-active {
+.cc-log-func.cc-active {
     background-color: var(--active-color);
 }
 
 
-.tc-log-func.tc-log-clear {
+.cc-log-func.cc-log-clear {
     font-size: 20px;
     color: #f44;
     line-height: 15px;
 }
 
-.tc-log-func.tc-log-error {
+.cc-log-func.cc-log-error {
     color: #f44
 }
-.tc-log-func.tc-log-error.tc-active {
+.cc-log-func.cc-log-error.cc-active {
     background-color: #ffd0d0;
 }
 
-.tc-log-func.tc-log-warn {
+.cc-log-func.cc-log-warn {
     color: #ef762f
 }
-.tc-log-func.tc-log-warn.tc-active {
+.cc-log-func.cc-log-warn.cc-active {
     background-color: #fff5c2;
 }
 
-.tc-log-func.tc-log-info {
+.cc-log-func.cc-log-info {
     color: var(--info-text);
 }
-.tc-log-func.tc-log-info.tc-active {
+.cc-log-func.cc-log-info.cc-active {
     background-color: #d8d8ff;
 }
 
-.tc-log-func.tc-log-tc {
+.cc-log-func.cc-log-tc {
     color: #555;
 }
 
-.tc-log-func.tc-log-all {
+.cc-log-func.cc-log-all {
 }
 
-.tc-log-ell {
+.cc-log-ell {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow-x: hidden;
 }
 
-.tc-obj-viewer {
+.cc-obj-viewer {
     color: #222;
 }
 
-.tc-obj-key {
+.cc-obj-key {
     color: var(--key-text);
 }
 
-.tc-obj-number {
+.cc-obj-number {
     color: #09885a
 }
 
-.tc-obj-string {
+.cc-obj-string {
     white-space: pre-wrap;
     word-break: break-all;
     color: var(--string-text)
 }
-.tc-log-obj-head .tc-obj-string {
+.cc-log-obj-head .cc-obj-string {
     white-space: nowrap;
 }
 
-.tc-log-block.tc-log-error .tc-obj-string {
+.cc-log-block.cc-log-error .cc-obj-string {
     color: var(--error-text)
 }
 
-.tc-obj-def {
+.cc-obj-def {
     color: #222
 }
 
-.tc-log-obj-head {
+.cc-log-obj-head {
     overflow: hidden;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
     padding-left: 11px;
     position: relative;
 }
 
-.tc-log-obj-view {
+.cc-log-obj-view {
     display: none;
     border-top: 1px solid var(--border-color2);
     padding-left: 13px;
 }
 
-.tc-log-obj-view.tc-open {
+.cc-log-obj-view.cc-open {
     display: block;
 }
 
-.tc-log-copy {
+.cc-log-copy {
     text-decoration: underline;
     color: var(--copy-text);
     font-size: 12px;
@@ -251,7 +251,7 @@
     cursor: pointer;
 }
 
-.tc-log-repeat {
+.cc-log-repeat {
     background-color: var(--repeat-bg);
     color: #fff;
     border-radius: 10px;
@@ -262,14 +262,14 @@
     top: -1px;
 }
 
-.tc-log-np {
+.cc-log-np {
     padding: 0;
 }
-.tc-log-icon-w{
+.cc-log-icon-w{
     display: flex;
     align-items: center;
 }
-.tc-log-icon {
+.cc-log-icon {
     margin-left: 3px;
     cursor: pointer;
     display: flex;
@@ -277,13 +277,13 @@
     align-items: center;
 }
 
-.tc-ib-w{
+.cc-ib-w{
     border-bottom: 1px solid var(--border-color);
     font-family: menlo, monospace;
     align-items: center;
     display: none;
 }   
-.tc-ib-close{
+.cc-ib-close{
     color: #f44;
     font-size: 16px;
     padding: 0 3px;
@@ -291,7 +291,7 @@
     height: 100%;
     background-color: var(--border-color);
 }
-.tc-ib-input{
+.cc-ib-input{
     border: none;
     font-family: menlo, monospace;
     background-color: var(--border-color);
@@ -302,7 +302,7 @@
     padding-left: 5px;
     flex: 1;
 }
-.tc-ib-btn{
+.cc-ib-btn{
     width: 50px;
     border: none;
     background-color: var(--background);

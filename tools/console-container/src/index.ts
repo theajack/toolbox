@@ -10,6 +10,7 @@ import {generateFunc, checkType} from './func';
 import './style.less';
 import './global.d';
 import {InputBox} from './input-box';
+import {Filter} from './filter';
 
 export class Console {
     console: ConsoleHacker;
@@ -28,6 +29,8 @@ export class Console {
     mode: 'light'|'dark';
     needCopy: boolean = false;
 
+    filter: Filter;
+
     constructor ({
         container,
         needCopy = true,
@@ -40,7 +43,7 @@ export class Console {
         if (typeof container === 'string') {
             container = document.querySelector(container)! as HTMLElement;
         }
-        container.classList.add('tc-console-container');
+        container.classList.add('cc-console-container');
         this.container = container;
         this.needCopy = needCopy;
         this.console = new ConsoleHacker(needCopy);
@@ -49,15 +52,17 @@ export class Console {
         this.lastType = '';
         this.index = 1;
         this.version = __VERSION__;
-        this.container.classList.add(`tc-${mode}`);
+        this.container.classList.add(`cc-${mode}`);
         this.mode = mode;
 
         this._render();
+
+        this.filter = new Filter(this.blockList);
         // tab , page , index
     }
 
     setMode (mode: 'light'|'dark') {
-        this.container.classList.replace(`tc-${this.mode}`, `tc-${mode}`);
+        this.container.classList.replace(`cc-${this.mode}`, `cc-${mode}`);
         this.mode = mode;
     }
     setVisible (bool: boolean, style = 'flex') {
@@ -72,8 +77,8 @@ export class Console {
         this.filterBox = new InputBox({
             placeholder: 'Filter Log.',
             text: 'filter',
-            onconfirm: (v: string) => { this.filterLog(v); },
-            onclose: () => { this.filterLog(''); }
+            onconfirm: (v: string) => { this.filterText(v); },
+            onclose: () => { this.filterText(''); }
         });
         this.runBox = new InputBox({
             placeholder: 'Run Javascript.',
@@ -95,18 +100,15 @@ export class Console {
             this.blockList
         ]);
     }
-    filterLog (v: string) {
-        const reg = new RegExp(v);
-        const list = this.blockList.children;
-        for (let i = 0; i < list.length; i++) {
-            const el = list[i] as HTMLElement;
-            const v = (reg.test(el.textContent || '')) ? 'block' : 'none';
-            el.style.display = v;
-        }
+    filterText (v: string) {
+        this.filter.setTextFilter(v);
+    }
+    filterType (v: 'all'|'error'|'warn'|'log'|'info'|'tc') {
+        this.filter.setTypeFilter(v);
     }
     private _appendRepeatEle () {
         let c: any = this.blockList.children;
-        let el = c[c.length - 1].querySelector('.tc-log-repeat')! as HTMLElement;
+        let el = c[c.length - 1].querySelector('.cc-log-repeat')! as HTMLElement;
         if (el) {
             el.innerText = this.index + '';
         } else {

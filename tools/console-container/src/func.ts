@@ -10,7 +10,7 @@ import TYPE from './type';
 import {Icons} from './util';
 let state = TYPE.all;
 let laseEl: any;
-function gc (el: HTMLElement, type: string) {
+function gc (type: string, filter: (v: string)=>void) {
     let cls = 'log-func log-' + type;
     if (type === state) {
         cls += ' active';
@@ -19,41 +19,29 @@ function gc (el: HTMLElement, type: string) {
         if (type === state) {
             return;
         }
-        if (laseEl) {laseEl.className = laseEl.className.replace('tc-active', '').trim();}
+        if (laseEl) {laseEl.className = laseEl.className.replace('cc-active', '').trim();}
         state = type;
         laseEl = this;
-        this.className += ' tc-active';
-        const list = el.children;
-        if (state === TYPE.all) {
-            for (let i = 0; i < list.length; i++) {
-                (list[i] as HTMLElement).style.display = 'block';
-            }
-        } else {
-            for (let i = 0; i < list.length; i++) {
-                const el = list[i] as HTMLElement;
-                if (el.className.indexOf('tc-log-' + type) !== -1) {
-                    el.style.display = 'block';
-                } else {
-                    el.style.display = 'none';
-                }
-            }
-        }
+        this.className += ' cc-active';
+        filter(type);
     });
 }
 export function generateFunc (log: Console) {
-    const el = log.blockList;
+    const filter = (v: string) => {
+        log.filterType(v as any);
+    };
     return tool.append(
         tool.create('div', 'log-funcs'),
         [
             tool.append(
                 tool.create('div', 'log-types'),
                 [
-                    laseEl = gc(el, TYPE.all),
-                    gc(el, TYPE.error),
-                    gc(el, TYPE.warn),
-                    gc(el, TYPE.info),
-                    gc(el, TYPE.log),
-                    gc(el, TYPE.tc),
+                    laseEl = gc(TYPE.all, filter),
+                    gc(TYPE.error, filter),
+                    gc(TYPE.warn, filter),
+                    gc(TYPE.info, filter),
+                    gc(TYPE.log, filter),
+                    gc(TYPE.tc, filter),
                 ]
             ),
             createBtns(log),
@@ -86,7 +74,7 @@ function createBtns (log: Console) {
 }
 
 
-export function checkType (el, type) {
+export function checkType (el: HTMLElement, type: string) {
     if (state !== TYPE.all && type !== state) {
         el.style.display = 'none';
     }
