@@ -35,15 +35,20 @@ export class Console {
         container,
         needCopy = true,
         mode = 'dark',
+        bgTransparent = false,
     }: {
         container: HTMLElement|string,
         needCopy?: boolean,
         mode?: 'light'|'dark',
+        bgTransparent?: boolean,
     }) {
         if (typeof container === 'string') {
             container = document.querySelector(container)! as HTMLElement;
         }
         container.classList.add('cc-console-container');
+        if (bgTransparent) {
+            container.style.backgroundColor = 'transparent';
+        }
         this.container = container;
         this.needCopy = needCopy;
         this.console = new ConsoleHacker(needCopy);
@@ -105,6 +110,9 @@ export class Console {
     }
     filterType (v: 'all'|'error'|'warn'|'log'|'info'|'tc') {
         this.filter.setTypeFilter(v);
+    }
+    clear () {
+        this.blockList.innerHTML = '';
     }
     private _appendRepeatEle () {
         let c: any = this.blockList.children;
