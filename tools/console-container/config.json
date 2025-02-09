@@ -8,5 +8,5 @@
     "dependencies": [
         ""
     ],
-    "browserOnly": true
+    "envs": ["browser"]
   }

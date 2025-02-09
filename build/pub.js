@@ -4,5 +4,11 @@
  * @Description: Coding something
  */
 const {execSync} = require('child_process');
+const {resolve} = require('path');
 const name = process.argv[2];
-execSync(`cd publish/${name} && npm publish`);
+
+const toolConfig = require(resolve(__dirname, `../tools/${name}/config.json`));
+
+const tail = toolConfig.name?.startsWith('@') ? ' --access public' : '';
+
+execSync(`cd publish/${name} && npm publish${tail}`);

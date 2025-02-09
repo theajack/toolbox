@@ -1,10 +1,10 @@
 {
-    "version": "0.0.5",
-    "description": "Make the textarea support Tab indentation.",
-    "keywords": [
-      "tab",
-      "indentation",
-      "textarea"
-    ],
-    "browserOnly": true
-  }
+  "version": "0.0.5",
+  "description": "Make the textarea support Tab indentation.",
+  "keywords": [
+    "tab",
+    "indentation",
+    "textarea"
+  ],
+  "envs": ["browser"]
+}

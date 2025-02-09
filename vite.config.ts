@@ -65,8 +65,17 @@ function geneBuildAppConfig (): UserConfig {
     };
 }
 
+function generateSupport (config) {
+    return {
+        browser: config.envs.includes('browser'),
+        node: config.envs.includes('node'),
+    };
+}
+
 function geneBuildConfig (name: string, isIIFE = false): UserConfig {
     const toolConfig = require(`./tools/${name}/config.json`);
+
+    const support = generateSupport(toolConfig);
 
     let formats: LibraryFormats[];
 
@@ -74,7 +83,7 @@ function geneBuildConfig (name: string, isIIFE = false): UserConfig {
         formats = ['iife'];
     } else {
         formats = ['es'];
-        if (!toolConfig.browserOnly) {
+        if (support.node) {
             formats.push('cjs');
         }
     }
@@ -83,7 +92,6 @@ function geneBuildConfig (name: string, isIIFE = false): UserConfig {
             cssInjectedByJsPlugin(), {
                 name: 'generate-npm-stuff',
                 writeBundle () {
-
                     if (isIIFE) {
                         const fullName = `${name}.iife.min.js`;
                         copyFileSync(`publish/${name}/iife/${fullName}`, `publish/${name}/${fullName}`);
@@ -103,7 +111,7 @@ function geneBuildConfig (name: string, isIIFE = false): UserConfig {
         build: {
             minify: true,
             lib: {
-                entry: resolve(__dirname, `tools/${name}/index.ts`), // 打包的入口文件
+                entry: resolve(__dirname, `tools/${name}/${isIIFE ? 'iife.' : ''}index.ts`), // 打包的入口文件
                 name: toolConfig.libName || upcase(name), // 包名
                 formats, // 打包模式，默认是es和umd都打
                 fileName: (format: string) => `${name}.${format}.min.js`,
@@ -139,6 +147,8 @@ function generatePackage (name: string) {
         dependencies[name] = pkg.dependencies[name];
     }
 
+    const support = generateSupport(toolConfig);
+
     writeFileSync(
         `${target}package.json`,
         JSON.stringify(Object.assign(
@@ -151,18 +161,20 @@ function generatePackage (name: string) {
                 'keywords'
             ]),
             {
-                name,
+                name: toolConfig.name || name,
                 dependencies,
-                'main': `${name}.${toolConfig.browserOnly ? 'es' : 'cjs'}.min.js`,
+                'main': `${name}.${!support.node ? 'es' : 'cjs'}.min.js`,
                 'module': `${name}.es.min.js`,
-                'unpkg': `${name}.iife.min.js`,
-                'jsdelivr': `${name}.iife.min.js`,
                 'typings': `${name}.es.min.d.ts`,
                 'repository': {
                     'type': 'git',
                     'url': `https://github.com/theajack/toolbox/tree/main/tools/${name}`
                 },
-            }
+            },
+            support.browser ? {
+                'unpkg': `${name}.iife.min.js`,
+                'jsdelivr': `${name}.iife.min.js`,
+            } : {},
         ), null, 2),
         'utf8'
     );

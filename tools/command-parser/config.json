@@ -1,0 +1,10 @@
+{
+  "name": "@tcbox/command-parser",
+  "version": "0.0.1",
+  "description": "Parse nodejs process.argv in to json.",
+  "keywords": [
+    "command",
+    "parser"
+  ],
+  "envs": ["browser", "node"]
+}

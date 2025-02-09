@@ -17,7 +17,7 @@ devDependencies:
     specifier: ^6.0.4
     version: registry.npmmirror.com/@rollup/plugin-babel@6.0.4(@babel/core@7.25.2)
   '@types/node':
-    specifier: ^22.2.0
+    specifier: ^22.4.0
     version: registry.npmmirror.com/@types/node@22.4.0
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.4.0

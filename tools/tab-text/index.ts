@@ -1,11 +1,5 @@
 let DefaultTab = '  ';
 
-export default {
-    setTabValue,
-    useTab,
-    onKeyDown,
-};
-
 export function setTabValue (v: string) {
     DefaultTab = v;
 }
