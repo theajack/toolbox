@@ -15,10 +15,13 @@ export interface ICommandInfo {
     name: string;
     args: string[];
     options: Record<string, string|boolean>;
+    line: string;
 }
 
 // 解析 rm --rf a -rf x -ab 类似的 => {rf: 'a', r: 'x', f: 'x', a: true, b: true}
-export function parseCommand (content: string): ICommandInfo[] {
+// -- 结束 options 解析
+// forceArg=true时 :xxx 会被强制标识为arg
+export function parseCommand (content: string, forceArg = true): ICommandInfo[] {
 
     content = content.trim();
 
@@ -31,6 +34,7 @@ export function parseCommand (content: string): ICommandInfo[] {
             name: '',
             args: [],
             options: {},
+            line: value,
         };
         const arr = value.split(' ');
 
@@ -39,6 +43,10 @@ export function parseCommand (content: string): ICommandInfo[] {
         let optKey = '', isLong = false;
 
         const addOptions = (value: string|true) => {
+            if (forceArg && typeof value === 'string' && value[0] === ':') {
+                command.args.push(value.substring(1));
+                value = true;
+            }
             if (isLong) {
                 command.options[optKey] = value;
             } else {
@@ -55,9 +63,18 @@ export function parseCommand (content: string): ICommandInfo[] {
             isLong = value[1] === '-';
         };
 
+        let optionsSplit = false;
         for (let item of arr) {
             item = item.trim();
             if (!item) continue;
+            if (optionsSplit) {
+                command.args.push(item);
+                continue;
+            }
+            if (item === '--') {
+                optionsSplit = true;
+                continue;
+            }
             if (item[0] === '-') {
                 setLong(item);
                 if (optKey) addOptions(true);

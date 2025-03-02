@@ -57,6 +57,7 @@ function geneDevConfig (): UserConfig {
 }
 
 function geneBuildAppConfig (): UserConfig {
+    console.log(name);
     return {
         base: `/${name}`,
         build: {
